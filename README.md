@@ -1,20 +1,36 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Global OCR Vision Pro
 
-# Run and deploy your AI Studio app
+A **privacy-first, browser-based Optical Character Recognition (OCR) application** that extracts text from images and PDF documents entirely on the client side.  
+No servers. No cloud. No data leakage.
 
-This contains everything you need to run your app locally.
+---
 
-View your app in AI Studio: https://ai.studio/apps/drive/167jCsmE0XKWVMeeyvfUm5C4dfj30f4Zy
+## 🚀 Overview
 
-## Run Locally
+**Global OCR Vision Pro** is designed to provide fast, secure, and accurate text extraction using modern web technologies.  
+All processing happens **inside the user’s browser**, ensuring complete data privacy and high performance.
 
-**Prerequisites:**  Node.js
+This project is ideal for:
+- Academic submissions
+- Privacy-sensitive document processing
+- Offline-ready browser tools
+- Modern frontend architecture demonstrations
 
+---
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## ✨ Key Features
+
+- 📄 **OCR for Images and PDFs**
+- 🔒 **100% Client-Side Processing**
+- 🌐 **Browser-Only Execution**
+- ⚡ **Fast & Responsive UI**
+- 🧠 **Powered by Tesseract.js**
+- 🧩 **PDF Parsing using PDF.js**
+- 🛠️ **Modern Vite + React + TypeScript Stack**
+
+---
+
+## 🧠 Core Concept
+
+The application follows a simple and robust logic:
+
