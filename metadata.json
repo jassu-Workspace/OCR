@@ -1,4 +1,3 @@
-
 {
   "name": "Global OCR Vision Pro",
   "description": "A production-grade, privacy-first OCR extraction tool with local Tesseract engine. Features adaptive preprocessing, multi-language support, and confidence-mapped heatmaps.",

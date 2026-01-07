@@ -140,14 +140,6 @@ const App: React.FC = () => {
           <History items={history} onClear={clearHistory} />
         )}
       </main>
-
-      <footer className="py-6 border-t border-slate-200 dark:border-slate-800 text-center text-sm text-slate-500">
-        <div className="flex items-center justify-center gap-4 mb-2">
-          <span className="flex items-center gap-1"><Info size={14} /> Tesseract.js Engine</span>
-          <span className="flex items-center gap-1"><Info size={14} /> Local Processing</span>
-        </div>
-        <p>&copy; {new Date().getFullYear()} VisionPro OCR. All Rights Reserved.</p>
-      </footer>
     </div>
   );
 };

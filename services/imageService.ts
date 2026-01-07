@@ -1,9 +1,58 @@
 
+import * as pdfjsLib from 'pdfjs-dist';
+
+// Configure PDF.js worker
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://esm.sh/pdfjs-dist@4.0.379/build/pdf.worker.min.mjs`;
+
+const convertPdfToImage = async (file: File): Promise<string> => {
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    
+    if (pdf.numPages === 0) throw new Error("PDF has no pages");
+    
+    // Get the first page
+    const page = await pdf.getPage(1);
+    const viewport = page.getViewport({ scale: 2.0 }); // Higher scale for better OCR quality
+
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    if (!context) throw new Error("Canvas context unavailable");
+
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+
+    await page.render({
+      canvasContext: context,
+      viewport: viewport,
+    }).promise;
+
+    return canvas.toDataURL('image/jpeg', 0.9);
+  } catch (error) {
+    console.error("PDF Conversion Error:", error);
+    throw new Error("Failed to parse PDF. Please ensure it is a valid PDF file.");
+  }
+};
+
 export const preprocessImage = async (
   file: File | string,
   config: { grayscale: boolean; contrast: number; threshold: number }
 ): Promise<{ processed: string; original: string }> => {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
+    let src = '';
+    
+    try {
+      if (typeof file === 'string') {
+        src = file;
+      } else if (file.type === 'application/pdf') {
+        src = await convertPdfToImage(file);
+      } else {
+        src = URL.createObjectURL(file);
+      }
+    } catch (e: any) {
+      return reject(e.message || "Failed to load file source");
+    }
+
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.onload = () => {
@@ -12,7 +61,7 @@ export const preprocessImage = async (
       if (!ctx) return reject('No canvas context');
 
       // Max resolution for OCR efficiency while maintaining quality
-      const maxWidth = 1500;
+      const maxWidth = 1800; // Increased slightly for PDF quality
       const scale = Math.min(1, maxWidth / img.width);
       canvas.width = img.width * scale;
       canvas.height = img.height * scale;
@@ -56,7 +105,7 @@ export const preprocessImage = async (
         original: originalCanvas.toDataURL('image/jpeg', 0.8)
       });
     };
-    img.onerror = reject;
-    img.src = typeof file === 'string' ? file : URL.createObjectURL(file);
+    img.onerror = () => reject("Failed to render image. The file might be corrupted.");
+    img.src = src;
   });
 };
